@@ -1,5 +1,7 @@
 package edu.sdccd.cisc191.template;
 
+import javafx.application.Application;
+
 import java.net.*;
 import java.io.*;
 
@@ -10,7 +12,7 @@ import java.io.*;
  */
 public class Server {
     private ServerSocket serverSocket;
-    private final File file = new File("Common/src/main/java/edu/sdccd/cisc191/template/Times");
+    private final File timesFile = new File("Common/src/main/java/edu/sdccd/cisc191/template/Times");
 
     /**
      * opens port
@@ -46,10 +48,12 @@ public class Server {
             // writes content to file
             UpdateRequest updateRequest = (UpdateRequest) objectIn.readObject();
             String lineToAdd = updateRequest.getLineToAdd();
-            addLineToFile(lineToAdd);
-            sendFileContents(out); // Send file contents back to the client
 
+            //adds the line the client typed in to the times file
+            UpdateFile.addLineToFile(lineToAdd);
 
+            //launches the times display
+            Application.launch(DisplayTimes.class, new String[]{});
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error handling client request: " + e.getMessage());
         }
@@ -59,34 +63,6 @@ public class Server {
                 System.out.println("Client disconnected.");
             } catch (IOException e) {
                 System.out.println("Error closing client socket: " + e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * write lines to file
-     * @param line
-     */
-    private void addLineToFile(String line) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(line);
-            writer.newLine();
-            System.out.println("Added line: " + line);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * sends file content back to client
-     * @param out
-     * @throws IOException
-     */
-    private void sendFileContents(PrintWriter out) throws IOException {
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                out.println(line); // Send each line back to the client
             }
         }
     }
