@@ -31,8 +31,7 @@ public class GameBoardButton extends Button {
         setText(gameBoard.getCurrentTurn());
         setDisable(true);
         gameBoard.check();
-        gameBoard.switchTurn();
+        gameBoard.getSwitchTurn();
         gameBoard.updateHeader();
     }
-
 }
