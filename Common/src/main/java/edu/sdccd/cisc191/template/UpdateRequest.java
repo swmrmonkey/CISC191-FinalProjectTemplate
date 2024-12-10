@@ -7,10 +7,12 @@ import java.io.Serializable;
  * to update the file
  */
 public class UpdateRequest implements Serializable {
-    private String lineToAdd;
+    private String line;
+    private String answer;
 
-    public UpdateRequest(String lineToAdd) {
-        this.lineToAdd = lineToAdd;
+    public UpdateRequest(String line, String answer) {
+        this.line = line;
+        this.answer = answer;
     }
 
     /**
@@ -18,13 +20,21 @@ public class UpdateRequest implements Serializable {
      * @return lines
      */
     public String getLineToAdd() {
-        return lineToAdd;
+        return line;
+    }
+
+    /**
+     * gets answer from client
+     * @return answer
+     */
+    public String getAnswer() {
+        return answer;
     }
 
     @Override
     public String toString() {
-        return "UpdateRequest{" +
-                "lineToAdd='" + lineToAdd + '\'' +
-                '}';
+        return "UpdateRequest{" + "lineToAdd='" + line +
+                "answer='" + answer + '\'' + '}';
     }
+
 }

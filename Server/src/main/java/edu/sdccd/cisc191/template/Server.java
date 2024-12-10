@@ -10,7 +10,8 @@ import java.io.*;
  */
 public class Server {
     private ServerSocket serverSocket;
-    private final File file = new File("Common/src/main/java/edu/sdccd/cisc191/template/Times");
+    private final File file1 = new File("Common/src/main/java/edu/sdccd/cisc191/template/AllTimes");
+    private final File file2 = new File("Common/src/main/java/edu/sdccd/cisc191/template/MostRecentTimes");
 
     /**
      * opens port
@@ -29,6 +30,7 @@ public class Server {
 
                 // handles the client request
                 handleClientRequest(clientSocket);
+
             } catch (IOException e) {
                 System.out.println("Error accepting client connection: " + e.getMessage());
             }
@@ -43,14 +45,24 @@ public class Server {
         try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
              ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream())) {
 
-            // writes content to file
-            UpdateRequest updateRequest = (UpdateRequest) objectIn.readObject();
-            String lineToAdd = updateRequest.getLineToAdd();
-            addLineToFile(lineToAdd);
-            sendFileContents(out); // Send file contents back to the client
+            // keeps updating the file while answer is "y"
+            boolean keepConnection = true;
+            while (keepConnection) {
+                // writes content to file
+                UpdateRequest updateRequest = (UpdateRequest) objectIn.readObject();
+                String lineToAdd = updateRequest.getLineToAdd();
+                addLineToFile(lineToAdd, file1);
 
+                // gets most recent times and writes it into a separate file
+                getsMostRecentTimes(file1, file2);
 
-        } catch (IOException | ClassNotFoundException e) {
+                // breaks out of loop when answer is "n"
+                if (updateRequest.getAnswer().equals("n")) {
+                    keepConnection = false;
+                }
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
             System.out.println("Error handling client request: " + e.getMessage());
         }
         finally {
@@ -64,10 +76,49 @@ public class Server {
     }
 
     /**
+     * reads through ALLTimes file and puts the most recent
+     * time of each event into another file
+     * @param originalFile
+     * @param recentTimesFile
+     */
+    private void getsMostRecentTimes(File originalFile, File recentTimesFile) {
+        // creates a treemap
+        SwimmingEventsMap map = new SwimmingEventsMap();
+
+        // reads through file and puts most recent time of each event in treemap
+        try (BufferedReader br = new BufferedReader(new FileReader(originalFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] events = line.split("-");
+                String key = events[0];
+                String value = events[1];
+                map.addEvent(key, value);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        // writes keys and values in the treemap into another file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(recentTimesFile))) {
+            for (String key : map.getKeySet()) {
+                bw.write(key + "-" + map.getValue(key));
+                bw.newLine();
+                System.out.println("Added line: " + key + "-" + map.getValue(key));
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Error writing to output file: " + e.getMessage());
+        }
+    }
+
+
+    /**
      * write lines to file
      * @param line
+     * @return
      */
-    private void addLineToFile(String line) {
+    private PrintWriter addLineToFile(String line, File file) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(line);
             writer.newLine();
@@ -75,22 +126,13 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     /**
-     * sends file content back to client
-     * @param out
-     * @throws IOException
+     * starts server
+     * @param args
      */
-    private void sendFileContents(PrintWriter out) throws IOException {
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                out.println(line); // Send each line back to the client
-            }
-        }
-    }
-
     public static void main(String[] args) {
         Server server = new Server();
         try {
