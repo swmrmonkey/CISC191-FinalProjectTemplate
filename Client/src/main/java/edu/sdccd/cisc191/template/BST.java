@@ -3,7 +3,6 @@ package edu.sdccd.cisc191.template;
 /**
  * This class implements a Binary Search Tree that stores swimming events
  * The tree is organized based on stroke, distance, and time
- * If a node
  */
 public class BST {
     private BSTNode root;
