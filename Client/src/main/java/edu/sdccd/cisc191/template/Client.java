@@ -134,19 +134,21 @@ public class Client {
         List<StreamEvents> events = convertFileToList(originalFile);
 
         // starts the stream
-        events.parallelStream()
+        Map<String, List<StreamEvents>> groupedEvents = events.parallelStream()
                 .sorted(Comparator.comparing(StreamEvents::getStroke) // Sort by stroke
                         .thenComparing(event -> Integer.parseInt(event.getDistance())) // Then sort by distance
                         .thenComparing(event -> convertTimeToSeconds(event.getTime()))) // Then sort by time
-                .collect(Collectors.groupingBy(StreamEvents::getStroke)) // Group by stroke
-                .forEach((stroke, eventList) -> {
-                    // Print the stroke
-                    System.out.println("Stroke: " + stroke);
+                .collect(Collectors.groupingBy(StreamEvents::getStroke)); // Group by stroke
 
-                    // Print each event for the current stroke, sorted by distance and time
-                    eventList.forEach(event -> System.out.println("  " + event.getDistance() + " - " + event.getTime()));
-                    System.out.println();
-                });
+        // prints the map
+        groupedEvents.forEach((stroke, eventList) -> {
+            // Print the stroke
+            System.out.println("Stroke: " + stroke);
+
+            // Print each event for the current stroke, sorted by distance and time
+            eventList.forEach(event -> System.out.println("  " + event.getDistance() + " - " + event.getTime()));
+            System.out.println();
+        });
     }
 
     /**
