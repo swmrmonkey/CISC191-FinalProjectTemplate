@@ -19,8 +19,10 @@ Writes to and reads a file
 Client sends a request to Sever and Server responds
 ## Module 7
 Created a treemap to get most recent times
-## Module 8/9
-Used a binary search tree that 
+## Module 8
+Puts events of same stroke in linked list
+## Module 9
+Used a binary search tree to sort events
 ## Module 11
 Used parallel streams to sort and print times
 ## Module 12
