@@ -17,6 +17,16 @@ Creates a class called UpdateRequest that is used in the Client and Server modul
 Writes to and reads a file
 ## Module 6
 Client sends a request to Sever and Server responds
+## Module 7
+Created a treemap to get most recent times
+## Module 8
+Puts events of same stroke in linked list
+## Module 9
+Used a binary search tree to sort events
+## Module 11
+Used parallel streams to sort and print times
+## Module 12
+Used Stream API to sort and print times by stroke, distance, and time
 ## Common Module
 Shared classes between client and server modules.
 ## Server Module
