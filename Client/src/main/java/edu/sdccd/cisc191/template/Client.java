@@ -134,14 +134,14 @@ public class Client {
         List<StreamEvents> events = convertFileToList(originalFile);
 
         // starts the stream
-        Map<String, List<StreamEvents>> groupedEvents = events.parallelStream()
+        Map<String, List<StreamEvents>> sortedEvents = events.parallelStream()
                 .sorted(Comparator.comparing(StreamEvents::getStroke) // Sort by stroke
                         .thenComparing(event -> Integer.parseInt(event.getDistance())) // Then sort by distance
                         .thenComparing(event -> convertTimeToSeconds(event.getTime()))) // Then sort by time
                 .collect(Collectors.groupingBy(StreamEvents::getStroke)); // Group by stroke
 
         // prints the map
-        groupedEvents.forEach((stroke, eventList) -> {
+        sortedEvents.forEach((stroke, eventList) -> {
             // Print the stroke
             System.out.println("Stroke: " + stroke);
 
