@@ -1,4 +1,6 @@
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.template.BST;
+
+import edu.sdccd.cisc191.template.Events.Event;
 
 /**
  * This class implements a Binary Search Tree that stores swimming events
@@ -20,7 +22,7 @@ public class BST {
      * @param distance
      * @param time
      */
-    public void add(String stroke, String distance, String time) {
+    public void add(String distance, String stroke, String time) {
         root = addRecursively(root, stroke, distance, time);
     }
 
@@ -35,15 +37,13 @@ public class BST {
      * @return the node
      */
     private BSTNode addRecursively(BSTNode node, String stroke, String distance, String time) {
-        //converts time into seconds
-        Double timeInSeconds = convertTimeToSeconds(time);
-
         // base case
         if (node == null) {
             node = new BSTNode(stroke);
-            node.addEvent(distance, time, timeInSeconds);
+            node.addEvent(distance, time);
             return node;
         }
+
 
         // compare stroke with current node's key
         int compare = stroke.compareTo(node.getKey());
@@ -60,7 +60,7 @@ public class BST {
 
         // stroke already exists, so event is added to linked list in sorted order
         else {
-            node.addEvent(distance, time, timeInSeconds);
+            node.addEvent(distance, time);
         }
         return node;
     }
@@ -92,22 +92,6 @@ public class BST {
 
             // recursively prints right subtree
             printTreeRecursively(node.getRight());
-        }
-    }
-
-    /**
-     * converts times into seconds
-     * @return time
-     */
-    private Double convertTimeToSeconds(String time) {
-        // converts times over a minute into seconds
-        if (time.contains(":")) {
-            String[] timeParts = time.split(":");
-            return Double.parseDouble(timeParts[0]) * 60 + Double.parseDouble(timeParts[1]);
-        }
-        // returns time if less than a minute
-        else {
-            return Double.parseDouble(time);
         }
     }
 }

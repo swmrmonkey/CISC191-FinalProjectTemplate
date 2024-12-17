@@ -112,7 +112,6 @@ public class Server {
         }
     }
 
-
     /**
      * write lines to file
      * @param line

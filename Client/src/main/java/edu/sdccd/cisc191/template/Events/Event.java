@@ -1,4 +1,6 @@
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.template.Events;
+
+import edu.sdccd.cisc191.template.Utilities.ConvertTime;
 
 /**
  * This class creates a swimming event. The distance and time,
@@ -7,13 +9,12 @@ package edu.sdccd.cisc191.template;
 public class Event implements Comparable<Event> {
     private String distance;
     private String time;
-    private Double timeInSeconds;
+
 
     // constructor
-    public Event(String distance, String time, Double timeInSeconds) {
+    public Event(String distance, String time) {
         this.distance = distance;
         this.time = time;
-        this.timeInSeconds = timeInSeconds;
     }
 
     /**
@@ -32,14 +33,6 @@ public class Event implements Comparable<Event> {
         return time;
     }
 
-    /**
-     * gets time in seconds, as a double
-     * @return time in seconds
-     */
-    public Double getTimeInSeconds() {
-        return timeInSeconds;
-    }
-
     @Override
     /**
      * returns Event as string
@@ -47,7 +40,6 @@ public class Event implements Comparable<Event> {
     public String toString() {
         return distance + " - " + time;
     }
-
 
     @Override
     /**
@@ -62,6 +54,6 @@ public class Event implements Comparable<Event> {
         }
 
         // If distances are equal, compare times
-        return this.time.compareTo(next.time);
+        return Double.compare(ConvertTime.convert(this.time), ConvertTime.convert(next.time));
     }
 }

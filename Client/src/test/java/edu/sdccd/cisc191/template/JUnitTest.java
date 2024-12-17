@@ -19,9 +19,9 @@ class EventsArrayTest {
     void testEventsArrayContents() {
         String[][] expectedEvents = {
                 {"50 free", "100 free", "200 free"},
-                {"100 back", "200 back"},
-                {"100 breast", "200 breast"},
-                {"100 fly", "200 fly"},
+                {"50 back", "100 back", "200 back"},
+                {"50 breast", "100 breast", "200 breast"},
+                {"50 fly", "100 fly", "200 fly"},
                 {"200 IM", "400 IM"}
         };
 

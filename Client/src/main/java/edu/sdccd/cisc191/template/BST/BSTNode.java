@@ -1,4 +1,6 @@
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.template.BST;
+
+import edu.sdccd.cisc191.template.Events.Event;
 
 import java.util.LinkedList;
 
@@ -69,10 +71,9 @@ public class BSTNode {
      * adds an event
      * @param distance
      * @param time
-     * @param timeInSeconds
      */
-    public void addEvent(String distance, String time, Double timeInSeconds) {
-        Event newEvent = new Event(distance, time, timeInSeconds);
+    public void addEvent(String distance, String time) {
+        Event newEvent = new Event(distance, time);
 
         // Insert the new event in a sorted order by distance and time
         int index = 0;
