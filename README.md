@@ -3,14 +3,16 @@ Intermediate Java Programming Final Project Template
 ## Prerequisites
 1. Maven
 2. Git
-3. JDK 1.8
+3. JDK 21
 ## Building
-mvn clean install
+change project structure to corretto 21. Then, install openjavafx 21 separately and add VM options
 ## Running
 java -jar Server/target/Server-1.0.0.jar  
 java -jar Client/target/Client-1.0.0.jar
 ## Module 1/2
 Creates a 2d array of all events
+## Module 3
+Can use JavaFX to add an event to AllTimes file
 ## Module 4
 Creates a class called UpdateRequest that is used in the Client and Server modules
 ## Module 5
